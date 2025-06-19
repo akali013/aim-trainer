@@ -1,6 +1,8 @@
 
 
 const target = document.querySelector(".js-target");
+const url = new URL(window.location.href);
+const difficulty = url.searchParams.get("difficulty");
 
 // Register when the target is clicked
 document.querySelector(".js-target").addEventListener("click", () => {
