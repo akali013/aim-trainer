@@ -1,0 +1,7 @@
+.target {
+  position: fixed;
+  background-color: red;
+  padding: 25px;
+  border-radius: 50px;
+  cursor: pointer;
+}
