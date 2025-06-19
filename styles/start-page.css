@@ -1,0 +1,71 @@
+body {
+  text-align: center;
+  background-color: rgb(243, 243, 243);
+  font-family: "Noto Sans", Arial;
+}
+
+.title {
+  font-size: 76px;
+  font-weight: bold;
+  margin-top: 200px;
+  margin-bottom: 50px;
+}
+
+.buttons-container {
+  margin: 10px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+
+.difficulty-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.easy-button,
+.medium-button,
+.hard-button,
+.extreme-button {
+  padding: 10px 20px;
+  min-width: 50px;
+  max-width: 100px;
+  cursor: pointer;
+  background-color: rgb(117, 116, 116);
+  font-weight: 400;
+  font-family: "Noto Sans", Arial;
+  border-radius: 10px;
+  transition: border-width 0.1s, font-weight 0.1s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.easy-button {
+  color: lightgreen;
+  border: 2px solid lightgreen;
+}
+
+.medium-button {
+  color: rgb(253, 253, 69);
+  border: 2px solid rgb(253, 253, 69);
+}
+
+
+.hard-button {
+  color: rgb(197, 39, 39);
+  border: 2px solid rgb(197, 39, 39); 
+}
+
+.extreme-button {
+  color: purple;
+  border: 2px solid purple;
+}
+
+.easy-button:hover,
+.medium-button:hover,
+.hard-button:hover,
+.extreme-button:hover {
+  border-width: 7px;
+  font-weight: bold;
+}
