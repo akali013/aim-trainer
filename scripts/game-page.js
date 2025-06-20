@@ -6,6 +6,8 @@ let missPenalty;    // Deduct this amount from score when a click is missed
 let score = 0;
 let personalBest = JSON.parse(localStorage.getItem(`${difficulty}-pb`)) || 0;
 const background = document.querySelector(".js-background");
+let time = 60;    // 60 seconds
+let timeoutId;    // Use this to reset the reposition timer for each click
 
 beginSession();
 
@@ -19,6 +21,13 @@ function beginSession() {
     case "medium": {
       loadMediumMode();
       break;
+    }
+    case "hard": {
+      loadHardMode();
+      break;
+    }
+    case "extreme": {
+      loadExtremeMode();
     }
   }
   loadTimer();
@@ -35,6 +44,7 @@ function beginSession() {
 
 function registerClick(event) {
   event.stopPropagation();    // Prevents the background from also being clicked
+  clearTimeout(timeoutId);    // Reset target reposition timer
   score++;
   loadScore();
   repositionTarget();
@@ -51,8 +61,10 @@ function registerMissedClick() {
 // Make the target move every clickTime milliseconds
 async function cycleTargetMovement() {
   if (clickTime) {
-    await timeout(clickTime);
-    repositionTarget();
+    while (time > 0) {
+      await timeout(clickTime);
+      repositionTarget();
+    }
   }
 }
 
@@ -76,9 +88,28 @@ function loadMediumMode() {
   missPenalty = 1;
 }
 
+// Hard mode will have
+// - target padding of 15px
+// - 3 seconds to click target
+// - -1 miss penalty
+function loadHardMode() {
+  target.style.padding = "15px";
+  clickTime = 3000;
+  missPenalty = 1;
+}
+
+// Extreme mode will have
+// - target padding of 10px
+// - 2 seconds to click target
+// - -2 miss penalty
+function loadExtremeMode() {
+  target.style.padding = "10px";
+  clickTime = 2000;
+  missPenalty = 2;
+}
+
 // Loads a 1 minute timer into the screen
 async function loadTimer() {
-  let time = 60;    // 60 seconds
   const timer = document.querySelector(".js-timer");
   while (time >= 0) {
     timer.innerHTML = time;
