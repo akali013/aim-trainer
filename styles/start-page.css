@@ -8,13 +8,13 @@ body {
   font-size: 76px;
   font-weight: bold;
   margin-top: 200px;
-  margin-bottom: 50px;
+  margin-bottom: 8%;
 }
 
 .buttons-container {
   margin: 10px;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-columns: 0.5fr 0.5fr 0.5fr 0.5fr;
 }
 
 .difficulty-button {
@@ -68,4 +68,19 @@ body {
 .extreme-button:hover {
   border-width: 7px;
   font-weight: bold;
+}
+
+.difficulty-description {
+  margin-top: 5%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.difficulty-list {
+  font-weight: 400;
+  margin-top: 2%;
+  text-align: left;
 }

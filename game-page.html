@@ -2,14 +2,23 @@
 <html>
   <head>
     <title>Aim Trainer</title>
-    <link rel="stylesheet" href="styles/general.css">
     <link rel="stylesheet" href="styles/game-page.css">
+
+    <!-- Noto Sans font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
   </head>
 
   <body>
     <div class="container">
+      <div class="timer js-timer"></div>
+      <div class="score js-score"></div>
       <div class="target js-target"></div>
     </div>
+
+
+    <div class="results-container js-results-container"></div>
 
     <script type="module" src="scripts/game-page.js"></script>
   </body>
