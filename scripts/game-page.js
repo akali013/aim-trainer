@@ -7,7 +7,10 @@ let score = 0;
 let personalBest = JSON.parse(localStorage.getItem(`${difficulty}-pb`)) || 0;
 const background = document.querySelector(".js-background");
 let time = 60;    // 60 seconds
-let timeoutId;    // Use this to reset the reposition timer for each click
+let timeoutIds = {    // Tracks the timeout ids of the two timers so they can be reset separately for whatever reason
+  timer: 0,
+  reposition: 0
+}
 
 beginSession();
 
@@ -32,7 +35,7 @@ function beginSession() {
   }
   loadTimer();
   loadScore();
-  repositionTarget();
+  repositionTarget();   // Start with a random position each time
   cycleTargetMovement();
 
   // Register when the target is clicked
@@ -44,25 +47,28 @@ function beginSession() {
 
 function registerClick(event) {
   event.stopPropagation();    // Prevents the background from also being clicked
-  clearTimeout(timeoutId);    // Reset target reposition timer
+  clearTimeout(timeoutIds.reposition);    // Reset target reposition timer
   score++;
   loadScore();
   repositionTarget();
+  cycleTargetMovement();
 }
 
 function registerMissedClick() {
-  score -= missPenalty;
-  if (score < 0) {
-    score = 0;
+  if (missPenalty) {
+    score -= missPenalty;
+    if (score < 0) {
+      score = 0;
+    }
+    loadScore();
   }
-  loadScore();
 }
 
 // Make the target move every clickTime milliseconds
 async function cycleTargetMovement() {
   if (clickTime) {
     while (time > 0) {
-      await timeout(clickTime);
+      await timeout(clickTime, "reposition");
       repositionTarget();
     }
   }
@@ -114,16 +120,19 @@ async function loadTimer() {
   while (time >= 0) {
     timer.innerHTML = time;
     time--; 
-    await timeout(1000);  // Wait one second
+    await timeout(1000, "timer");  // Wait one second
   }
   endSession();
 }
 
 // Wait a given number of milliseconds via a 
 // returned promise that's handled with an await 
-function timeout(ms) {
+// type is the type of timer this is being used with:
+// timer: session timer
+// reposition: reposition timer
+function timeout(ms, type) {
   return new Promise(resolve => {
-    setTimeout(resolve, ms);
+    timeoutIds[type] = setTimeout(resolve, ms);
   });
 }
 
