@@ -1,4 +1,4 @@
-const target = document.querySelector(".js-target");
+let target = document.querySelector(".js-target");
 const url = new URL(window.location.href);
 const difficulty = url.searchParams.get("difficulty");
 let clickTime;    // How many ms the user has to click the target before it moves
@@ -11,11 +11,28 @@ let timeoutIds = {    // Tracks the timeout ids of the two timers so they can be
   timer: 0,
   reposition: 0
 }
+const customTargetURL = localStorage.getItem("target-setting");    // Load target image URL from the settings pop-up
 
 beginSession();
 
 function beginSession() {
   score = 0;
+
+  // Register when the target is clicked
+  if (customTargetURL) {
+    // Replace the default target with the custom one
+    target.remove();
+    document.querySelector(".js-background").innerHTML += `
+      <img src="${customTargetURL}" class="custom-target js-custom-target">
+    `;
+    target = document.querySelector(".js-custom-target");
+    target.addEventListener("click", registerClick);
+  }
+  else {
+    // Use the default target (red circle)
+    target.addEventListener("click", registerClick);
+  }
+
   switch (difficulty) {
     case "easy": {
       loadEasyMode(); 
@@ -37,9 +54,6 @@ function beginSession() {
   loadScore();
   repositionTarget();   // Start with a random position each time
   cycleTargetMovement();
-
-  // Register when the target is clicked
-  target.addEventListener("click", registerClick);
 
   // Apply a miss penalty when the target isn't clicked but the background is
   background.addEventListener("click", registerMissedClick);
@@ -79,7 +93,13 @@ async function cycleTargetMovement() {
 // - unlimited time to click target
 // - no penalty for missed clicks
 function loadEasyMode() {
-  target.style.padding = "25px";
+  if (customTargetURL) {
+    target.style.width = "50px";
+    target.style.height = "50px";
+  }
+  else {
+    target.style.padding = "25px";
+  }
   clickTime = "";
   missPenalty = 0;
 }
@@ -89,7 +109,13 @@ function loadEasyMode() {
 // - 5 seconds to click target
 // - -1 miss penalty
 function loadMediumMode() {
-  target.style.padding = "20px";
+  if (customTargetURL) {
+    target.style.width = "40px";
+    target.style.height = "40px";
+  }
+  else {
+    target.style.padding = "20px";
+  }
   clickTime = 5000;
   missPenalty = 1;
 }
@@ -99,7 +125,13 @@ function loadMediumMode() {
 // - 3 seconds to click target
 // - -1 miss penalty
 function loadHardMode() {
-  target.style.padding = "15px";
+  if (customTargetURL) {
+    target.style.width = "30px";
+    target.style.height = "30px";
+  }
+  else {
+    target.style.padding = "15px";
+  }
   clickTime = 3000;
   missPenalty = 1;
 }
@@ -109,7 +141,13 @@ function loadHardMode() {
 // - 2 seconds to click target
 // - -2 miss penalty
 function loadExtremeMode() {
-  target.style.padding = "10px";
+  if (customTargetURL) {
+    target.style.width = "20px";
+    target.style.height = "20px";
+  }
+  else {
+    target.style.padding = "10px";
+  }
   clickTime = 2000;
   missPenalty = 2;
 }
@@ -167,19 +205,32 @@ function repositionTarget() {
 
 // Returns a random offset to change the target's position
 // while also remaining in the viewport
-// Movable range: 0 to window width - target size (padding * 2) 
+// Movable range: 0 to window width - target size (padding * 2)
+// ! Note that custom targets use width and height while the default target uses padding !
 function getRandomOffsetX() {
   const windowWidth = window.innerWidth;
-  const padding = Number(window.getComputedStyle(target).getPropertyValue("padding").substring(0, window.getComputedStyle(target).getPropertyValue("padding").length - 2));  // Remove the "px"
-  return Math.floor(Math.random() * (windowWidth - (padding * 2)));
+  let targetSize = 0;
+  if (customTargetURL) {
+    targetSize = Number(window.getComputedStyle(target).getPropertyValue("width").substring(0, window.getComputedStyle(target).getPropertyValue("width").length - 2));  // Remove the "px"
+  }
+  else {
+    targetSize = Number(window.getComputedStyle(target).getPropertyValue("padding").substring(0, window.getComputedStyle(target).getPropertyValue("padding").length - 2));
+  }
+  return Math.floor(Math.random() * (windowWidth - (targetSize * 2)));
 }
 
 // Same as offset x, but use window height instead of width
 // Movable range: 0 to window height - target size (padding * 2)
 function getRandomOffsetY() {
   const windowHeight = window.innerHeight;
-  const padding = Number(window.getComputedStyle(target).getPropertyValue("padding").substring(0, window.getComputedStyle(target).getPropertyValue("padding").length - 2));  // Remove the "px"
-  return Math.floor(Math.random() * (windowHeight - (padding * 2)));
+  let targetSize = 0;
+  if (customTargetURL) {
+    targetSize = Number(window.getComputedStyle(target).getPropertyValue("height").substring(0, window.getComputedStyle(target).getPropertyValue("height").length - 2));  // Remove the "px"
+  }
+  else {
+    targetSize = Number(window.getComputedStyle(target).getPropertyValue("padding").substring(0, window.getComputedStyle(target).getPropertyValue("padding").length - 2));
+  }
+    return Math.floor(Math.random() * (windowHeight - (targetSize * 2)));
 }
 
 // Show the results pop-up when the timer is finished

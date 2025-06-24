@@ -4,6 +4,110 @@ body {
   font-family: "Noto Sans", Arial;
 }
 
+.settings-button-container {
+  position: fixed;
+  right: 20px;
+  top: 20px;
+}
+
+.settings-button {
+  border: 2px solid black;
+  background-color: transparent;
+  border-radius: 20px;
+  padding: 3px 5px;
+  cursor: pointer;
+  transition: background-color 0.15s;
+}
+
+.settings-icon-container {
+  position: relative;
+  width: 30px;
+}
+
+.settings-icon {
+  width: 100%;
+  object-fit: contain;
+  object-position: center;
+}
+
+.settings-icon-tooltip {
+  position: absolute;
+  left: -19px;
+  top: 40px;
+  background-color: black;
+  color: white;
+  padding: 10px;
+  border-radius: 13px;
+  opacity: 0;
+  pointer-events: none;
+  font-family: "Noto Sans", Arial;
+  font-weight: 600;
+}
+
+.settings-button:hover .settings-icon-tooltip {
+  opacity: 1;
+}
+
+.settings-button:hover {
+  background-color: black;
+}
+
+.settings-container {
+  display: flex;
+  justify-content: center;
+}
+
+.settings {
+  position: fixed;
+  top: 10%;
+  background-color: rgb(228, 255, 228);
+  padding: 30px 50px;
+  border-radius: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.336);
+}
+
+.target-settings {
+  font-size: 25px;
+  font-weight: bold;
+  padding: 40px 10px;
+  text-align: left;
+}
+
+.settings-buttons-container {
+  margin-top: 100px;
+}
+
+.cancel-button,
+.save-button {
+  margin: 0 50px;
+}
+
+.settings button {
+  font-family: "Noto Sans", Arial;
+  font-size: 16px;
+  padding: 5px 10px;
+  border: 1px solid gray;
+  cursor: pointer;
+}
+
+.current-target {
+  width: 200px;
+  object-fit: contain;
+  object-position: center;
+  width: 80px;
+  height: 80px;
+  border-radius: 40px;
+  object-fit: cover;
+  object-position: center;
+  margin-top: 15px;
+}
+
+.saved-message {
+  margin-top: 10px;
+  color: green;
+  font-size: 13px;
+}
+
 .title {
   font-size: 76px;
   font-weight: bold;
@@ -51,7 +155,6 @@ body {
   color: rgb(253, 253, 69);
   border: 2px solid rgb(253, 253, 69);
 }
-
 
 .hard-button {
   color: rgb(197, 39, 39);
